@@ -58,12 +58,12 @@ jobs:
     container:
       image: ghcr.io/fleaurent/doxygen_image:latest
       credentials:
-      username: fleaurent
+        username: fleaurent
         password: ${{  secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
     steps:
       - name: run in custom container
-      shell: bash
-      run: |
-        # Whatever commands you want to run here using the container with your new Docker image at ghcr.io!
-        echo "--This is running in my custom Docker image--"
+        shell: bash
+        run: |
+          # Whatever commands you want to run here using the container with your new Docker image at ghcr.io!
+          echo "--This is running in my custom Docker image--"
         
