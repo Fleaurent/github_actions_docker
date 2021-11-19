@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run on VM
-	    run: |
+        run: |
           echo This job does not specify a container.
           echo It runs directly on the virtual machine.
         
@@ -54,7 +54,7 @@ jobs:
     container: node:10.16-jessie
     steps:
       - name: Run in container
-	    run: |
+        run: |
           echo This job does specify a container.
           echo It runs in the container instead of the VM.
         
@@ -80,16 +80,16 @@ https://stackoverflow.com/questions/64033686/how-can-i-use-private-docker-image-
 ```yml
 # The job that will use the container image you just pushed to ghcr.io
 custom_container_job:
-	runs-on: ubuntu-18.04
-	container:
-		image: ghcr.io/<YOUR_USERNAME>/<IMAGE_NAME>:<IMAGE_TAG>
-		credentials:
-		   username: <YOUR_USERNAME>
-		   password: ${{  secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
-	steps:
-		- name: run in custom container
-		  shell: bash
-		  run: |
-			# Whatever commands you want to run here using the container with your new Docker image at ghcr.io!
-			echo "--This is running in my custom Docker image--"
+  runs-on: ubuntu-18.04
+  container:
+    image: ghcr.io/<YOUR_USERNAME>/<IMAGE_NAME>:<IMAGE_TAG>
+    credentials:
+      username: <YOUR_USERNAME>
+      password: ${{  secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
+  steps:
+    - name: run in custom container
+      shell: bash
+      run: |
+        # Whatever commands you want to run here using the container with your new Docker image at ghcr.io!
+        echo "--This is running in my custom Docker image--"
 ```
