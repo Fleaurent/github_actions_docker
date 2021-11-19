@@ -1,3 +1,6 @@
+![example workflow](https://github.com/Fleaurent/Python_Github_Actions/actions/workflows/blank.yml/badge.svg)  
+![example workflow](https://github.com/Fleaurent/Python_Github_Actions/actions/workflows/publish_github_pages.yml/badge.svg)  
+
 # Github Actions Docker Doxygen  
 
 ___
