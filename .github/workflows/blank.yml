@@ -55,14 +55,23 @@ jobs:
 
   custom_container_job:  
     runs-on: ubuntu-18.04
+    
     container:
       image: ghcr.io/fleaurent/doxygen_image:latest
       credentials:
         username: fleaurent
         password: ${{  secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
+        
     steps:
+      - uses: actions/checkout@v2
+      
       - name: run in custom container
         run: |
           # Whatever commands you want to run here using the container with your new Docker image at ghcr.io!
           echo "--This is running in my custom Docker image--"
+          
+      - name: generate documentation
+        run: doxygen Doxyfile
         
+      - name: publish documentation to gitlab pages
+        run: cp -r html/ docs

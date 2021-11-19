@@ -1,7 +1,7 @@
 .PHONY: hello build_image create_config doxygen
 
 hello:
-	echo "hello"
+	@echo "hello"
 
 build_image:
 	docker build -t doxygen_image .
