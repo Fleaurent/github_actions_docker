@@ -166,6 +166,8 @@ jobs:
           publish_dir: ./build
 ```
 
-4. set up github pages in the github repository  
-  &rarr; the files are deployed to a separate branch called gh-pages  
+4. set up github pages in the github repository:  
+  the files are pushed to a separate branch `gh-pages`  
   ![](images/github_pages_settings.png)  
+
+&rarr; [GitHub Pages](https://fleaurent.github.io/github_actions_docker/)  
