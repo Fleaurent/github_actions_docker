@@ -73,9 +73,12 @@ jobs:
       - name: generate documentation
         run: doxygen Doxyfile
         
+      - name: publish documentation to gitlab pages
+        run: cp -r html/ build/
+        
     # Push the HTML files to github-pages
       - name: GitHub Pages action
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: html/
+          publish_dir: ./build
