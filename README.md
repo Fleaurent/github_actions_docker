@@ -1,6 +1,7 @@
-# Github Actions Docker  
+# Github Actions Docker Doxygen  
 
-# 1. Using Public Docker Images  
+___
+# 1. Public Docker Images  
 
 ```yml
 # This is a basic workflow to help you get started with Actions
@@ -60,7 +61,9 @@ jobs:
         
 ```
 
-# 2. Using Private Docker Images  
+
+___
+# 2. Private Docker Images  
 https://stackoverflow.com/questions/64033686/how-can-i-use-private-docker-image-in-github-actions  
 &rarr; using github container registry ghcr.io  
 
@@ -93,3 +96,76 @@ custom_container_job:
         # Whatever commands you want to run here using the container with your new Docker image at ghcr.io!
         echo "--This is running in my custom Docker image--"
 ```
+
+
+___  
+# 3. Publish to GitLab Pages
+
+https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site  
+
+https://time2hack.com/auto-publish-github-pages-github-actions/  
+
+https://github.com/peaceiris/actions-gh-pages  
+
+
+1. update image: install git-lfs  
+  https://github.com/git-lfs/git-lfs/issues/4346  
+
+Dockerfile  
+```bash
+FROM alpine:latest
+
+RUN apk --update add doxygen graphviz git git-lfs &&\
+    rm -rf /var/cache/apk/*
+
+CMD ["doxygen", "-v"]
+
+WORKDIR /tmp
+```
+
+2. build and push the image  
+```bash
+$ docker build -t doxygen_image .
+$	docker tag doxygen_image:latest ghcr.io/fleaurent/doxygen_image:latest
+$ docker push ghcr.io/fleaurent/doxygen_image:latest
+```
+
+3. update the github action  
+`publish_github_pages.yml`  
+```yml
+name: Publish_Github_Pages_CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy_job:  
+    runs-on: ubuntu-18.04
+    
+    container:
+      image: ghcr.io/fleaurent/doxygen_image:latest
+      credentials:
+        username: fleaurent
+        password: ${{  secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
+        
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: generate documentation
+        run: doxygen Doxyfile
+        
+      - name: copy documentation to the build directory
+        run: cp -r html/ build/
+        
+    # Push the HTML files to github-pages
+      - name: GitHub Pages action
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+```
+
+4. set up github pages in the github repository  
+  &rarr; the files are deployed to a separate branch called gh-pages  
+  ![](images/github_pages_settings.png)  

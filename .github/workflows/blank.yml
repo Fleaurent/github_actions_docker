@@ -69,16 +69,3 @@ jobs:
         run: |
           # Whatever commands you want to run here using the container with your new Docker image at ghcr.io!
           echo "--This is running in my custom Docker image--"
-          
-      - name: generate documentation
-        run: doxygen Doxyfile
-        
-      - name: publish documentation to gitlab pages
-        run: cp -r html/ build/
-        
-    # Push the HTML files to github-pages
-      - name: GitHub Pages action
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
