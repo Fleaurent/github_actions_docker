@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['project_20title_17',['Project title',['../index.html',1,'']]]
+  ['project_20main_20page_17',['Project Main Page',['../index.html',1,'']]]
 ];

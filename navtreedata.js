@@ -25,7 +25,7 @@
 var NAVTREE =
 [
   [ "My Project", "index.html", [
-    [ "Project title", "index.html", null ],
+    [ "Project Main Page", "index.html", null ],
     [ "page_1", "page_1.html", null ],
     [ "page_2", "page_2.html", "page_2" ],
     [ "Files", "files.html", [
