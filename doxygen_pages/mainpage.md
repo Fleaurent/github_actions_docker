@@ -1,5 +1,5 @@
-@project_name Project Name
-@mainpage Project title
+@mainpage Project Main Page
+
 This is the main page for the project. 
   
 1. Describe the project in general and the components/ modules it has

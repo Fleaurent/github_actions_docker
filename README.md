@@ -1,8 +1,5 @@
 ![example workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/blank.yml/badge.svg) ![example workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/publish_github_pages.yml/badge.svg)  
 
-@project_name Project Name
-@mainpage Project title
-
 # Github Actions Docker Doxygen  
 
 ___
