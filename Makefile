@@ -1,7 +1,15 @@
-.PHONY: hello build_image create_config doxygen
+# Hint: Make sure to login to GitHub Container Registry before executing the commands below
+# docker login ghcr.io -> use your GitHub username and a personal access token
 
-hello:
-	@echo "hello"
+.PHONY: help build_image create_config doxygen
+
+help:
+    @echo "Available commands:"
+    @echo "  build_image    - Builds the Docker image named 'doxygen_image'"
+    @echo "  publish_image  - Builds, tags, and pushes the Docker image to GitHub Container Registry"
+    @echo "  create_config  - Generates a default Doxygen configuration file"
+    @echo "  doxygen        - Runs Doxygen using the Doxyfile configuration"
+    @echo "  help           - Displays this help message"
 
 build_image:
 	docker build -t doxygen_image .

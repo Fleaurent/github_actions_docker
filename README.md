@@ -5,13 +5,13 @@
 <!-- Main README -->
 # Github Actions Docker Doxygen  
 
-- [1. Public Docker Images](#1-public-docker-images)
-- [2. Private Docker Images](#2-private-docker-images)
+- [1. Using Public Docker Images in GitHub Actions](#1-using-public-docker-images-in-github-actions)
+- [2. Using Custom Docker Images in GitHub Actions](#2-using-custom-docker-images-in-github-actions)
 - [3. Publish to GitHub Pages](#3-publish-to-github-pages)
 
 ___
 
-## 1. Public Docker Images  
+## 1. Using Public Docker Images in GitHub Actions
 
 ```yml
 # This is a basic workflow to help you get started with Actions
@@ -73,28 +73,47 @@ jobs:
 
 ___
 
-## 2. Private Docker Images  
+## 2. Using Custom Docker Images in GitHub Actions
 
 https://stackoverflow.com/questions/64033686/how-can-i-use-private-docker-image-in-github-actions  
-&rarr; using github container registry ghcr.io  
+&rarr; using github container registry `ghcr.io`  
 
-1. generate token  
-  &rarr; DOCKER_CONTAINER_REGISTRY_TOKEN  
-2. save token as a repository secret  
-  &rarr; DOCKER_CONTAINER_REGISTRY_TOKEN  
-3. put token in computers environment  
-  `$ export DOCKER_CONTAINER_REGISTRY_TOKEN=<token>`  
-4. push docker image to `ghcr.io/<YOUR_USERNAME>/<IMAGE_NAME>:<IMAGE_TAG>`  
-  `$ echo $DOCKER_CONTAINER_REGISTRY_TOKEN | docker login ghcr.io -u <YOUR_USERNAME> --password-stdin`  
-  `$ make build_image`  
-  `$ docker tag doxygen_image:latest ghcr.io/fleaurent/doxygen_image:latest`  
-  `$ docker push ghcr.io/fleaurent/doxygen_image:latest`  
-5. add github action using the custom image  
+**1. Generate Access Token:**  
+
+GitHub Account > Settings > Developer Settings > Personal Access Tokens  
+with read:packages, write:packages and delete:packages permissions  
+&rarr; `DOCKER_CONTAINER_REGISTRY_TOKEN`  
+
+**2. Push the Image to GitHub Container Registry:**
+
+i.e. build&push the custom image to the ghcr container registry  
+
+```bash
+# Step 1: Build image locally
+$ docker build -t <IMAGE_NAME>:<IMAGE_TAG> .
+
+# Step 2: Save token as a local environment variable and login to GitHub Container Registry
+$ export DOCKER_CONTAINER_REGISTRY_TOKEN=<token>
+$ echo $DOCKER_CONTAINER_REGISTRY_TOKEN | docker login ghcr.io -u <YOUR_USERNAME> --password-stdin
+
+# Step 3: Build&Push the custom Docker image to GitHub Container Registry
+$ docker build -t <IMAGE_NAME>:<IMAGE_TAG> .
+$ docker tag <IMAGE_NAME>:<IMAGE_TAG> ghcr.io/<YOUR_USERNAME>/<IMAGE_NAME>:<IMAGE_TAG>
+$ docker push ghcr.io/<YOUR_USERNAME>/<IMAGE_NAME>:<IMAGE_TAG>
+```
+
+**3. Use the Image in Github Actions:**  
+
+save token as a repository secret for the github action:  
+Repository > Settings > Secrets and variables > Actions > New repository secret  
+&rarr; `DOCKER_CONTAINER_REGISTRY_TOKEN`  
+
+`.github/workflows/custom_container_job.yml`
 
 ```yml
 # The job that will use the container image you just pushed to ghcr.io
 custom_container_job:
-  runs-on: ubuntu-18.04
+  runs-on: ubuntu-latest
   container:
     image: ghcr.io/<YOUR_USERNAME>/<IMAGE_NAME>:<IMAGE_TAG>
     credentials:
