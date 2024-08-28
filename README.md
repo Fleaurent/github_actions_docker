@@ -1,5 +1,6 @@
-![example workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/blank.yml/badge.svg)
-![example workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/publish_github_pages.yml/badge.svg)  
+![Basic_Github_Actions_Workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/Basic_Github_Actions_Workflow.yml/badge.svg)
+![Custom_Container_Workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/Custom_Container_Workflow.yml/badge.svg)
+![Publish_Github_Pages_CI](https://github.com/Fleaurent/github_actions_docker/actions/workflows/Publish_Github_Pages_CI.yml/badge.svg)
 
 # Github Actions Docker Doxygen  
 
