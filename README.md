@@ -1,19 +1,17 @@
-<!-- Badges -->
 ![example workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/blank.yml/badge.svg)
 ![example workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/publish_github_pages.yml/badge.svg)  
 
-<!-- Main README -->
 # Github Actions Docker Doxygen  
 
-- [1. Using Public Docker Images in GitHub Actions](#1-using-public-docker-images-in-github-actions)
+- [1. Using Public Images in GitHub Actions](#1-using-public-images-in-github-actions)
 - [2. Using Custom Docker Images in GitHub Actions](#2-using-custom-docker-images-in-github-actions)
-  - [2.1. Build and Push the Custom Docker Image to GitHub Container Registry](#21-build-and-push-the-custom-docker-image-to-github-container-registry)
-  - [2.2. Use the Custom Docker Image in GitHub Actions](#22-use-the-custom-docker-image-in-github-actions)
+  - [2.1. Build and Push the Custom Docker Image Locally to GitHub Container Registry](#21-build-and-push-the-custom-docker-image-locally-to-github-container-registry)
+  - [2.2. Build and Push Custom Docker Images in GitHub Actions to GitHub Container Registry](#22-build-and-push-custom-docker-images-in-github-actions-to-github-container-registry)
 - [3. GitHub Pages Action](#3-github-pages-action)
 
 ___
 
-## 1. Using Public Docker Images in GitHub Actions
+## 1. Using Public Images in GitHub Actions
 
 `.github/workflows/basic_workflow.yml`  
 
@@ -59,6 +57,9 @@ jobs:
   use_vm_job:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Run on VM
         run: |
           echo This job does not specify a container.
@@ -68,6 +69,9 @@ jobs:
     runs-on: ubuntu-latest
     container: node:10.16-jessie
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Run in container
         run: |
           echo This job does specify a container.
@@ -78,7 +82,7 @@ ___
 
 ## 2. Using Custom Docker Images in GitHub Actions
 
-### 2.1. Build and Push the Custom Docker Image to GitHub Container Registry
+### 2.1. Build and Push the Custom Docker Image Locally to GitHub Container Registry
 
 https://stackoverflow.com/questions/64033686/how-can-i-use-private-docker-image-in-github-actions  
 &rarr; using github container registry `ghcr.io`  
@@ -113,28 +117,7 @@ save token as a repository secret for the github action:
 Repository > Settings > Secrets and variables > Actions > New repository secret  
 &rarr; `DOCKER_CONTAINER_REGISTRY_TOKEN`  
 
-`.github/workflows/custom_container_job.yml`
-
-```yml
-# The job that will use the container image you just pushed to ghcr.io
-custom_container_job:
-  runs-on: ubuntu-latest
-  container:
-    image: ghcr.io/<YOUR_USERNAME>/<IMAGE_NAME>:<IMAGE_TAG>
-    credentials:
-      username: <YOUR_USERNAME>
-      password: ${{  secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
-  steps:
-    - name: run in custom container
-      shell: bash
-      run: |
-        # Whatever commands you want to run here using the container with your new Docker image at ghcr.io!
-        echo "--This is running in my custom Docker image--"
-```
-
-### 2.2. Use the Custom Docker Image in GitHub Actions
-
-`custom_container_workflow.yml`
+`.github/workflows/custom_container_workflow.yml`
 
 ```yml
 name: Custom_Container_Workflow
@@ -151,25 +134,47 @@ on:
   workflow_dispatch:
 
 jobs:
-  use_custom_container_job:  
+  # The job that will use the container image you just pushed to ghcr.io
+  custom_container_job:
     runs-on: ubuntu-latest
-    
+
     container:
-      image: ghcr.io/fleaurent/doxygen_image:latest
+      image: ghcr.io/<YOUR_USERNAME>/<IMAGE_NAME>:<IMAGE_TAG>
       credentials:
-        username: fleaurent
+        username: <YOUR_USERNAME>
         password: ${{  secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
-        
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: run in custom container
+        shell: bash
         run: |
           # Whatever commands you want to run here using the container with your new Docker image at ghcr.io!
           echo "--This is running in my custom Docker image--"
+```
 
-  build_and_push_image_job:
+### 2.2. Build and Push Custom Docker Images in GitHub Actions to GitHub Container Registry
+
+`.github/workflows/custom_container_workflow.yml`  
+
+```yml
+name: Custom_Container_Workflow
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build_and_push_new_image_job:
     # https://github.com/docker/login-action
     runs-on: ubuntu-latest
 
@@ -188,6 +193,18 @@ jobs:
         run: |
           docker build -t ghcr.io/fleaurent/basic_image:latest .
           docker push ghcr.io/fleaurent/basic_image:latest
+  
+  use_new_image_job:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/fleaurent/basic_image:latest
+      credentials:
+        username: fleaurent
+        password: ${{  secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
+    steps:
+      - name: Run in new container
+        run: |
+          echo "--This is running in my new Docker image--"
 ```
 
 ___
@@ -245,7 +262,8 @@ jobs:
         password: ${{  secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
         
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
       
       - name: generate documentation
         run: doxygen Doxyfile

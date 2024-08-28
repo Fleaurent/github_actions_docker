@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  use_custom_container_job:  
+  use_custom_image_job:  
     runs-on: ubuntu-latest
     
     container:
@@ -30,7 +30,7 @@ jobs:
           # Whatever commands you want to run here using the container with your new Docker image at ghcr.io!
           echo "--This is running in my custom Docker image--"
 
-  build_and_push_image_job:
+  build_and_push_new_image_job:
     # https://github.com/docker/login-action
     runs-on: ubuntu-latest
 
@@ -49,3 +49,15 @@ jobs:
         run: |
           docker build -t ghcr.io/fleaurent/basic_image:latest .
           docker push ghcr.io/fleaurent/basic_image:latest
+  
+  use_new_image_job:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/fleaurent/basic_image:latest
+      credentials:
+        username: fleaurent
+        password: ${{  secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
+    steps:
+      - name: Run in new container
+        run: |
+          echo "--This is running in my new Docker image--"

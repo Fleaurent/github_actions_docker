@@ -39,6 +39,9 @@ jobs:
   use_vm_job:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Run on VM
         run: |
           echo This job does not specify a container.
@@ -48,6 +51,9 @@ jobs:
     runs-on: ubuntu-latest
     container: node:10.16-jessie
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Run in container
         run: |
           echo This job does specify a container.

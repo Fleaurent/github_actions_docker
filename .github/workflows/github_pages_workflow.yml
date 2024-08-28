@@ -15,7 +15,8 @@ jobs:
         password: ${{  secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
         
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
       
       - name: generate documentation
         run: doxygen Doxyfile
