@@ -1,4 +1,4 @@
-name: Publish_Github_Pages_CI
+name: Publish_Github_Pages_Workflow
 
 on:
   push:

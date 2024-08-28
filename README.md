@@ -1,6 +1,6 @@
-![Basic_Github_Actions_Workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/Basic_Github_Actions_Workflow.yml/badge.svg)
-![Custom_Container_Workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/Custom_Container_Workflow.yml/badge.svg)
-![Publish_Github_Pages_CI](https://github.com/Fleaurent/github_actions_docker/actions/workflows/Publish_Github_Pages_CI.yml/badge.svg)
+![Basic_Github_Actions_Workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/basic_workflow.yml/badge.svg)
+![Custom_Container_Workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/custom_container_workflow.yml/badge.svg)
+![Publish_Github_Pages_Workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/github_pages_workflow.yml/badge.svg)
 
 # Github Actions Docker Doxygen  
 
@@ -245,7 +245,7 @@ $ docker push ghcr.io/fleaurent/doxygen_image:latest
 `publish_github_pages.yml`  
 
 ```yml
-name: Publish_Github_Pages_CI
+name: Publish_Github_Pages_Workflow
 
 on:
   push:
