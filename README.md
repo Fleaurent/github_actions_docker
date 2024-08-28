@@ -1,9 +1,17 @@
-![example workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/blank.yml/badge.svg) ![example workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/publish_github_pages.yml/badge.svg)  
+<!-- Badges -->
+![example workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/blank.yml/badge.svg)
+![example workflow](https://github.com/Fleaurent/github_actions_docker/actions/workflows/publish_github_pages.yml/badge.svg)  
 
+<!-- Main README -->
 # Github Actions Docker Doxygen  
 
+- [1. Public Docker Images](#1-public-docker-images)
+- [2. Private Docker Images](#2-private-docker-images)
+- [3. Publish to GitHub Pages](#3-publish-to-github-pages)
+
 ___
-# 1. Public Docker Images  
+
+## 1. Public Docker Images  
 
 ```yml
 # This is a basic workflow to help you get started with Actions
@@ -63,9 +71,10 @@ jobs:
         
 ```
 
-
 ___
-# 2. Private Docker Images  
+
+## 2. Private Docker Images  
+
 https://stackoverflow.com/questions/64033686/how-can-i-use-private-docker-image-in-github-actions  
 &rarr; using github container registry ghcr.io  
 
@@ -80,8 +89,8 @@ https://stackoverflow.com/questions/64033686/how-can-i-use-private-docker-image-
   `$ make build_image`  
   `$ docker tag doxygen_image:latest ghcr.io/fleaurent/doxygen_image:latest`  
   `$ docker push ghcr.io/fleaurent/doxygen_image:latest`  
-   
 5. add github action using the custom image  
+
 ```yml
 # The job that will use the container image you just pushed to ghcr.io
 custom_container_job:
@@ -99,9 +108,9 @@ custom_container_job:
         echo "--This is running in my custom Docker image--"
 ```
 
+___
 
-___  
-# 3. Publish to GitLab Pages
+## 3. Publish to GitHub Pages
 
 https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site  
 
@@ -109,11 +118,10 @@ https://time2hack.com/auto-publish-github-pages-github-actions/
 
 https://github.com/peaceiris/actions-gh-pages  
 
-
 1. update image: install git-lfs  
-  https://github.com/git-lfs/git-lfs/issues/4346  
+   https://github.com/git-lfs/git-lfs/issues/4346
+   `Dockerfile`  
 
-Dockerfile  
 ```bash
 FROM alpine:latest
 
@@ -126,6 +134,7 @@ WORKDIR /tmp
 ```
 
 2. build and push the image  
+
 ```bash
 $ docker build -t doxygen_image .
 $	docker tag doxygen_image:latest ghcr.io/fleaurent/doxygen_image:latest
@@ -133,7 +142,9 @@ $ docker push ghcr.io/fleaurent/doxygen_image:latest
 ```
 
 3. update the github action  
+
 `publish_github_pages.yml`  
+
 ```yml
 name: Publish_Github_Pages_CI
 
