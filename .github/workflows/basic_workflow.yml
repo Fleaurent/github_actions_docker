@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Basic_Github_Actions_CI
+name: Basic_Github_Actions_Workflow
 
 # Controls when the workflow will run
 on:
@@ -43,8 +43,7 @@ jobs:
         run: |
           echo This job does not specify a container.
           echo It runs directly on the virtual machine.
-        
-        
+
   use_public_container_job:
     runs-on: ubuntu-latest
     container: node:10.16-jessie
@@ -53,41 +52,3 @@ jobs:
         run: |
           echo This job does specify a container.
           echo It runs in the container instead of the VM.
-
-  use_custom_container_job:  
-    runs-on: ubuntu-latest
-    
-    container:
-      image: ghcr.io/fleaurent/doxygen_image:latest
-      credentials:
-        username: fleaurent
-        password: ${{  secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
-        
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: run in custom container
-        run: |
-          # Whatever commands you want to run here using the container with your new Docker image at ghcr.io!
-          echo "--This is running in my custom Docker image--"
-
-  build_and_push_image_job:
-    # https://github.com/docker/login-action
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
-
-      - name: Build and push Docker image
-        run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/basic_image:latest .
-          docker push ghcr.io/${{ github.repository_owner }}/basic_image:latest

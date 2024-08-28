@@ -20,7 +20,7 @@ ___
 ```yml
 # This is a basic workflow to help you get started with Actions
 
-name: Basic_Github_Action_Workflow
+name: Basic_Github_Actions_Workflow
 
 # Controls when the workflow will run
 on:
@@ -63,8 +63,7 @@ jobs:
         run: |
           echo This job does not specify a container.
           echo It runs directly on the virtual machine.
-        
-        
+
   use_public_container_job:
     runs-on: ubuntu-latest
     container: node:10.16-jessie
@@ -187,8 +186,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/basic_image:latest .
-          docker push ghcr.io/${{ github.repository_owner }}/basic_image:latest
+          docker build -t ghcr.io/fleaurent/basic_image:latest .
+          docker push ghcr.io/fleaurent/basic_image:latest
 ```
 
 ___
