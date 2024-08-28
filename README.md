@@ -154,7 +154,7 @@ on:
 
 jobs:
   deploy_job:  
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest  # ubuntu-22.04
     
     container:
       image: ghcr.io/fleaurent/doxygen_image:latest
