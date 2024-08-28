@@ -51,8 +51,6 @@ jobs:
     runs-on: ubuntu-latest
     container: node:10.16-jessie
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
 
       - name: Run in container
         run: |

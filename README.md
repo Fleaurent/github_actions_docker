@@ -69,8 +69,6 @@ jobs:
     runs-on: ubuntu-latest
     container: node:10.16-jessie
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
 
       - name: Run in container
         run: |
@@ -195,6 +193,7 @@ jobs:
           docker push ghcr.io/fleaurent/basic_image:latest
   
   use_new_image_job:
+    needs: build_and_push_image_job
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/fleaurent/basic_image:latest
