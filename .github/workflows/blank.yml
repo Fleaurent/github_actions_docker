@@ -54,7 +54,7 @@ jobs:
           echo It runs in the container instead of the VM.
 
   custom_container_job:  
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     
     container:
       image: ghcr.io/fleaurent/doxygen_image:latest
